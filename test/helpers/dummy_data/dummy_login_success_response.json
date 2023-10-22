@@ -1,0 +1,10 @@
+
+{
+    "code": 200,
+    "status": true,
+    "message": "success",
+    "data": {
+        "occupation_level": 3,
+        "occupation_name": "Relawan"
+    }
+}
