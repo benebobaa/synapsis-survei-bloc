@@ -7,4 +7,5 @@ abstract class LoginRepository {
       String email, String password);
   Future<Either<Failure, String>> getEmailCache(String key);
   Future<Either<Failure, void>> saveEmailCache(String key, String email);
+  Future<Either<Failure, String>> loginFingerprint(String key);
 }

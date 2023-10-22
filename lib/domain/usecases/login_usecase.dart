@@ -20,4 +20,8 @@ class LoginUsecase {
   Future<Either<Failure, void>> saveEmailCache(String key, String email) async {
     return await _loginRepository.saveEmailCache(key, email);
   }
+
+  Future<Either<Failure, String>> loginFingerprint(String key) async {
+    return await _loginRepository.loginFingerprint(key);
+  }
 }

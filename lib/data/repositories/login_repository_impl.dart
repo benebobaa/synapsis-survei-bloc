@@ -22,6 +22,8 @@ class LoginRepositoryImpl extends LoginRepository {
     try {
       final result = await loginRemoteDataSource.postLogin(email, password);
       return Right(result.toEntity());
+    } on BadRequestException catch (e) {
+      return Left(LoginFailed(e.message));
     } on ServerException {
       return const Left(ServerFailure('An error occurred while try to login'));
     } on SocketException {
@@ -47,6 +49,17 @@ class LoginRepositoryImpl extends LoginRepository {
     } on LocalDatabaseException {
       return const Left(
           DatabaseFailure('An error occurred while try to save email cache'));
+    }
+  }
+
+  @override
+  Future<Either<Failure, String>> loginFingerprint(String key) async {
+    try {
+      final result = await loginLocalDataSource.loginFingerprint(key);
+      return Right(result);
+    } on LocalDatabaseException {
+      return const Left(
+          DatabaseFailure('An error occurred while try to get token cache'));
     }
   }
 }
