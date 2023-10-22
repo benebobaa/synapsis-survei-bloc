@@ -6,6 +6,7 @@ abstract class LoginLocalDataSource {
   Future<void> saveEmailCache(String key, String email);
   Future<void> deleteEmailCache(String key);
   Future<String> loginFingerprint(String key);
+  
 }
 
 class LoginLocalDataSourceImpl extends LoginLocalDataSource {

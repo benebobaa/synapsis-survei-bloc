@@ -6,6 +6,7 @@ import 'package:synapsis_survei/presentation/bloc/login_bloc/login_event.dart';
 import 'package:synapsis_survei/presentation/bloc/login_bloc/login_state.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
+  static const keyToken = 'cookie';
   final LoginUsecase _loginUsecase;
   LoginBloc(this._loginUsecase) : super(LoginInitial()) {
     on<OnLogin>(
@@ -29,6 +30,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     );
 
     on<OnEmailSaved>(
+      /// TODO: NOTE
+      /// Only save email, because saving password is risky for user privacy
       (event, emit) async {
         final result =
             await _loginUsecase.saveEmailCache(event.key, event.email);
@@ -56,5 +59,20 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         );
       },
     );
+
+    on<OnLoginFingerprint>((event, emit) async {
+      final result = await _loginUsecase.loginFingerprint(keyToken);
+
+      result.fold((failure) {
+        emit(LoginFailure(failure.message));
+      }, (data) async {
+        final isExpired = await _loginUsecase.checkTokenExpired(keyToken);
+        isExpired.fold((failure) {
+          emit(LoginFailure(failure.message));
+        }, (data) {
+          emit(LoginFingerprintSuccess());
+        });
+      });
+    });
   }
 }

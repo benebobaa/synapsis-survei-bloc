@@ -120,7 +120,11 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                           );
                     }
+                    Navigator.pushNamedAndRemoveUntil(
+                        context, SurveiPage.routeName, (route) => false);
+                  }
 
+                  if (state is LoginFingerprintSuccess) {
                     Navigator.pushNamedAndRemoveUntil(
                         context, SurveiPage.routeName, (route) => false);
                   }

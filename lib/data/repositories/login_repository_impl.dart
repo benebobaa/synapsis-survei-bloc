@@ -62,4 +62,19 @@ class LoginRepositoryImpl extends LoginRepository {
           DatabaseFailure('An error occurred while try to get token cache'));
     }
   }
+
+  @override
+  Future<Either<Failure, String>> checkTokenExpired(String key) async {
+    try {
+      final result = await loginRemoteDataSource.checkTokenExpired(key);
+      return Right(result);
+    } on UnauthenticatedException {
+      return const Left(
+          LoginFailed('Fingerprint failed, please login with email first'));
+    } on ServerException {
+      return const Left(ServerFailure('An error occurred while try to login'));
+    } on SocketException {
+      return const Left(ConnectionFailure('Failed to connect to the network'));
+    }
+  }
 }

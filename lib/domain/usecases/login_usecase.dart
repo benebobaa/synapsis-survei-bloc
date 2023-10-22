@@ -24,4 +24,8 @@ class LoginUsecase {
   Future<Either<Failure, String>> loginFingerprint(String key) async {
     return await _loginRepository.loginFingerprint(key);
   }
+
+  Future<Either<Failure, String>> checkTokenExpired(String key) async {
+    return await _loginRepository.checkTokenExpired(key);
+  }
 }

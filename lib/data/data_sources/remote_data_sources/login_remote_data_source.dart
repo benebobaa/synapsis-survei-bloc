@@ -53,6 +53,7 @@ class LoginRemoteDataSourceImpl extends LoginRemoteDataSource {
   Future<String> checkTokenExpired(String token) async {
     final response = await client.get(
       Uri.parse(ApiUrls.allSurvei),
+      headers: {'Cookie': token},
     );
     if (response.statusCode == 200) {
       return AllSurveiModel.fromJson(jsonDecode(response.body)).message;

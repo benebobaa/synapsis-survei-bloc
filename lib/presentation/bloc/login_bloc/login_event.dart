@@ -35,3 +35,8 @@ class OnGetEmailCache extends LoginEvent {
   @override
   List<Object?> get props => [key];
 }
+
+
+class OnLoginFingerprint extends LoginEvent{
+  
+}

@@ -66,3 +66,7 @@ class EmailCacheError extends LoginState {
   @override
   List<Object?> get props => [message];
 }
+
+class LoginFingerprintSuccess extends LoginState{
+  
+}
