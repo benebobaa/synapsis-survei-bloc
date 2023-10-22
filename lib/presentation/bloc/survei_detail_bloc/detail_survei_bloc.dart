@@ -72,5 +72,11 @@ class DetailSurveiBloc extends Bloc<DetailSurveiEvent, DetailSurveiState> {
       emit(DetailSurveiLoaded(
           detailSurveiEntity, currentQuestion, surveiAnswerEntity));
     });
+
+    on<OnSelectFromPicker>((event, emit) {
+      currentQuestion = event.currentQuestion;
+      emit(DetailSurveiLoaded(
+          detailSurveiEntity, currentQuestion, surveiAnswerEntity));
+    });
   }
 }

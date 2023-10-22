@@ -47,3 +47,12 @@ class OnAnswerQuestion extends DetailSurveiEvent {
   @override
   List<Object?> get props => [data];
 }
+
+class OnSelectFromPicker extends DetailSurveiEvent {
+  final int currentQuestion;
+
+  const OnSelectFromPicker(this.currentQuestion);
+
+  @override
+  List<Object?> get props => [currentQuestion];
+}

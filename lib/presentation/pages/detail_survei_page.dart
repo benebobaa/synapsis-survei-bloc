@@ -61,12 +61,14 @@ class _DetailSurveiPageState extends State<DetailSurveiPage> {
               children: [
                 MainContentQuestion(
                   data: state.result.data.questions[state.index],
+                  allSurveiData: state.result.data,
                   currentQuestion: state.index,
                   totalQuestion: state.result.data.questions.length,
                   surveiName: state.result.data.surveyName,
                   questionName:
                       state.result.data.questions[state.index].questionName,
                   valuePicked: state.surveiAnswerEntity.data[state.index].value,
+                  dataAnswer: state.surveiAnswerEntity,
                 ),
                 Positioned(
                   bottom: 0,

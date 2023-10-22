@@ -2,22 +2,27 @@
 import 'package:flutter/material.dart';
 
 import 'package:synapsis_survei/domain/entities/detail_survei_entity.dart';
+import 'package:synapsis_survei/domain/entities/survei_answer_entity.dart';
 import 'package:synapsis_survei/presentation/widgets/custom_elevated_button.dart';
 import 'package:synapsis_survei/presentation/widgets/question_number_picker.dart';
 import 'package:synapsis_survei/presentation/widgets/radio_button_answer_list.dart';
 
 class MainContentQuestion extends StatelessWidget {
-  const MainContentQuestion({
-    Key? key,
-    required this.data,
-    required this.currentQuestion,
-    required this.totalQuestion,
-    required this.surveiName,
-    required this.questionName,
-    this.valuePicked,
-  }) : super(key: key);
+  const MainContentQuestion(
+      {Key? key,
+      required this.data,
+      required this.allSurveiData,
+      required this.currentQuestion,
+      required this.totalQuestion,
+      required this.surveiName,
+      required this.questionName,
+      this.valuePicked,
+      required this.dataAnswer})
+      : super(key: key);
 
   final DetailQuestionsEntity data;
+  final DataDetailSurveiEntity allSurveiData;
+  final SurveiAnswerEntity dataAnswer;
   final int currentQuestion;
   final int totalQuestion;
   final String surveiName;
@@ -56,7 +61,8 @@ class MainContentQuestion extends StatelessWidget {
                       isOutlined: false,
                       height: MediaQuery.of(context).size.height * 0.074,
                       onPressed: () {
-                        QuestionNumberPicker.buildTopSheet(context);
+                        QuestionNumberPicker.buildTopSheet(
+                            context, allSurveiData,dataAnswer ,currentQuestion);
                       },
                     ))
                   ],
