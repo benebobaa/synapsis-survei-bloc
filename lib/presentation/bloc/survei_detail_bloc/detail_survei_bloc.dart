@@ -53,7 +53,8 @@ class DetailSurveiBloc extends Bloc<DetailSurveiEvent, DetailSurveiState> {
 
     on<OnSubmitSurvei>((event, emit) {
       currentQuestion = 0;
-
+      tempData.clear();
+      surveiAnswerEntity = SurveiAnswerEntity(surveiId: '', data: tempData);
       emit(DetailSurveiInitial(currentQuestion, surveiAnswerEntity));
     });
 
