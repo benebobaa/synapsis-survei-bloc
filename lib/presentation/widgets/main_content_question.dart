@@ -1,11 +1,17 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:synapsis_survei/core/common/widgets/custom_snackbar.dart';
 
 import 'package:synapsis_survei/domain/entities/detail_survei_entity.dart';
 import 'package:synapsis_survei/domain/entities/survei_answer_entity.dart';
+import 'package:synapsis_survei/presentation/bloc/survei_detail_bloc/detail_survei_bloc.dart';
+import 'package:synapsis_survei/presentation/bloc/survei_detail_bloc/detail_survei_event.dart';
+import 'package:synapsis_survei/presentation/pages/survei_page.dart';
 import 'package:synapsis_survei/presentation/widgets/custom_elevated_button.dart';
 import 'package:synapsis_survei/presentation/widgets/question_number_picker.dart';
 import 'package:synapsis_survei/presentation/widgets/radio_button_answer_list.dart';
+import 'package:timer_count_down/timer_count_down.dart';
 
 class MainContentQuestion extends StatelessWidget {
   const MainContentQuestion(
@@ -43,14 +49,28 @@ class MainContentQuestion extends StatelessWidget {
                     const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                 child: Row(
                   children: [
-                    Expanded(
-                        flex: 2,
-                        child: CustomElevatedButton(
-                          title: '45 Second Left',
-                          isOutlined: true,
-                          onPressed: () {},
-                          height: MediaQuery.of(context).size.height * 0.074,
-                        )),
+                    Countdown(
+                      //TODO: YOU CAN CHANGE THE COUNTDOWN TIME HERE #BENE
+                      seconds: 60,
+                      build: (_, double time) {
+                        return Expanded(
+                          flex: 2,
+                          child: CustomElevatedButton(
+                            title: '${time.toInt()} Seconds Left',
+                            isOutlined: true,
+                            onPressed: () {},
+                            height: MediaQuery.of(context).size.height * 0.074,
+                          ),
+                        );
+                      },
+                      onFinished: () {
+                        context.read<DetailSurveiBloc>().add(OnSubmitSurvei());
+                        CustomSnackbar.showMessage(
+                            'Terimakasih telah mengisi survei', context);
+                        Navigator.popUntil(
+                            context, ModalRoute.withName(SurveiPage.routeName));
+                      },
+                    ),
                     SizedBox(width: MediaQuery.of(context).size.width * 0.08),
                     Expanded(
                         child: CustomElevatedButton(
@@ -61,8 +81,8 @@ class MainContentQuestion extends StatelessWidget {
                       isOutlined: false,
                       height: MediaQuery.of(context).size.height * 0.074,
                       onPressed: () {
-                        QuestionNumberPicker.buildTopSheet(
-                            context, allSurveiData,dataAnswer ,currentQuestion);
+                        QuestionNumberPicker.buildTopSheet(context,
+                            allSurveiData, dataAnswer, currentQuestion);
                       },
                     ))
                   ],

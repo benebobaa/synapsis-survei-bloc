@@ -10,7 +10,8 @@ class CustomElevatedButton extends StatelessWidget {
       this.icon,
       this.currentQuestion = 1,
       this.totalQuestion = 0,
-      this.currentPosition});
+      this.currentPosition,
+      this.isLoading});
 
   final String title;
   final bool isOutlined;
@@ -20,6 +21,7 @@ class CustomElevatedButton extends StatelessWidget {
   final int? currentQuestion;
   final int? totalQuestion;
   final bool? currentPosition;
+  final bool? isLoading;
 
   @override
   Widget build(BuildContext context) {
@@ -42,27 +44,38 @@ class CustomElevatedButton extends StatelessWidget {
         ),
       ),
       onPressed: onPressed,
-      child: (icon != null && currentQuestion != null)
-          ? Row(
-              children: [
-                Icon(
-                  icon,
-                  size: 14,
-                  color: Colors.white,
+      child: (isLoading ?? false)
+          ? const Center(
+              child: SizedBox(
+                height: 20,
+                width: 20,
+                child: CircularProgressIndicator(
+                  strokeWidth: 2,
                 ),
-                const SizedBox(width: 2),
-                Text(
-                  '$currentQuestion/$totalQuestion',
-                  style: TextStyle(
-                      color: isOutlined ? Colors.blue : Colors.white,
-                      fontSize: 12),
-                ),
-              ],
+              ),
             )
-          : Text(
-              title,
-              style: TextStyle(color: isOutlined ? Colors.blue : Colors.white),
-            ),
+          : (icon != null && currentQuestion != null)
+              ? Row(
+                  children: [
+                    Icon(
+                      icon,
+                      size: 14,
+                      color: Colors.white,
+                    ),
+                    const SizedBox(width: 2),
+                    Text(
+                      '$currentQuestion/$totalQuestion',
+                      style: TextStyle(
+                          color: isOutlined ? Colors.blue : Colors.white,
+                          fontSize: 12),
+                    ),
+                  ],
+                )
+              : Text(
+                  title,
+                  style:
+                      TextStyle(color: isOutlined ? Colors.blue : Colors.white),
+                ),
     );
   }
 }

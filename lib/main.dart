@@ -1,7 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import 'package:synapsis_survei/core/services/router.dart';
 import 'package:synapsis_survei/injection_container.dart';
 import 'package:synapsis_survei/presentation/bloc/login_bloc/login_bloc.dart';
@@ -42,6 +41,9 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (context) => locator<DetailSurveiBloc>(),
         ),
+        // BlocProvider(
+        //   create: (context) => locator<TimerBloc>(),
+        // ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: isDebug,

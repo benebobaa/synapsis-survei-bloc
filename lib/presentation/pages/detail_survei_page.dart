@@ -4,6 +4,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:synapsis_survei/core/common/widgets/custom_snackbar.dart';
 import 'package:synapsis_survei/presentation/bloc/survei_detail_bloc/detail_survei_bloc.dart';
 import 'package:synapsis_survei/presentation/bloc/survei_detail_bloc/detail_survei_event.dart';
 import 'package:synapsis_survei/presentation/bloc/survei_detail_bloc/detail_survei_state.dart';
@@ -36,14 +37,9 @@ class _DetailSurveiPageState extends State<DetailSurveiPage> {
       body: SafeArea(
         child: BlocConsumer<DetailSurveiBloc, DetailSurveiState>(
             listener: (context, state) {
-          if (state is DetailSurveiInitial) {
-            // log('state is DetailSurveiInitial');
-            // log('state is ${state.currentQuestion}');
-            log('state is ${state.surveiAnswerEntity}');
-          }
+          if (state is DetailSurveiInitial) {}
           if (state is DetailSurveiLoaded) {
-            // log('currentQuestion ${state.index}');
-            log('currentQuestion ${state.surveiAnswerEntity}');
+            log('state is ${state.surveiAnswerEntity}');
           }
         }, builder: (emit, state) {
           if (state is DetailSurveiLoading) {
@@ -117,6 +113,9 @@ class _DetailSurveiPageState extends State<DetailSurveiPage> {
                                             context
                                                 .read<DetailSurveiBloc>()
                                                 .add(OnSubmitSurvei());
+                                            CustomSnackbar.showMessage(
+                                                'Terimakasih telah mengisi survei',
+                                                context);
                                             Navigator.pop(context);
                                             Navigator.pop(context);
                                           },

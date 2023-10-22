@@ -46,6 +46,7 @@ dependencies:
   dio: ^5.3.3
   intl: ^0.18.1
   carousel_slider: ^4.2.1
+  timer_count_down: ^2.2.0
 
 dev_dependencies:
   bloc_test: ^9.1.4
