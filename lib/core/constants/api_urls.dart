@@ -3,7 +3,7 @@ import 'package:synapsis_survei/core/constants/config_env.dart';
 class ApiUrls {
   //boilerplate code
   static const String baseUrl = 'https://api.openweathermap.org/data/2.5';
-  static const String apiKey = 'a16de83051d54709d3e2b74486d176cf';
+  static const String apiKey = 'secret';
   static String currentWeatherByName(String cityName) =>
       '$baseUrl/weather?q=$cityName&appid=$apiKey';
   static String weatherIcon(String iconCode) =>
