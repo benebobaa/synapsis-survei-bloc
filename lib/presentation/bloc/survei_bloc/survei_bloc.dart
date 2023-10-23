@@ -23,7 +23,7 @@ class SurveiBloc extends Bloc<SurveiEvent, SurveiState> {
     });
 
     on<OnCheckCookie>((event, emit) async {
-      final result = await _surveiUsecase.getCookie(ApiUrls.cookieKey);
+      final result = await _surveiUsecase.getCookie(event.key);
 
       result.fold((failure) {
         emit(GetCookieFailed());

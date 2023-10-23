@@ -105,6 +105,12 @@ class _LoginPageState extends State<LoginPage> {
                     CustomSnackbar.showMessage(state.message, context);
                   }
                   if (state is LoginSuccess) {
+                    context.read<LoginBloc>().add(
+                          const OnEmailSaved(
+                            key: 'isLogin',
+                            email: 'yes',
+                          ),
+                        );
                     if (_checkBoxValue.value) {
                       context.read<LoginBloc>().add(
                             OnEmailSaved(
@@ -128,10 +134,18 @@ class _LoginPageState extends State<LoginPage> {
                     context.read<LoginBloc>().add(OnCheckToken(state.token));
                   }
                   if (state is LoginFingerprintSuccess) {
+                    log('navigate');
+                    context.read<LoginBloc>().add(
+                          const OnEmailSaved(
+                            key: 'isLogin',
+                            email: 'yes',
+                          ),
+                        );
                     Navigator.pushNamedAndRemoveUntil(
                         context, SurveiPage.routeName, (route) => false);
                   }
                   if (state is TokenExpired) {
+                    CustomSnackbar.showMessage(state.message, context);
                     context.read<LoginBloc>().add(const OnDeleteCookie());
                   }
                 },

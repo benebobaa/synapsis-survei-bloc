@@ -3,6 +3,8 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:synapsis_survei/core/common/widgets/custom_snackbar.dart';
+import 'package:synapsis_survei/presentation/bloc/login_bloc/login_bloc.dart';
+import 'package:synapsis_survei/presentation/bloc/login_bloc/login_event.dart';
 import 'package:synapsis_survei/presentation/bloc/survei_bloc/survei_bloc.dart';
 import 'package:synapsis_survei/presentation/bloc/survei_bloc/survei_event.dart';
 import 'package:synapsis_survei/presentation/bloc/survei_bloc/survei_state.dart';
@@ -21,7 +23,7 @@ class SurveiPage extends StatefulWidget {
 class _SurveiPageState extends State<SurveiPage> {
   @override
   void initState() {
-    context.read<SurveiBloc>().add(const OnCheckCookie());
+    context.read<SurveiBloc>().add(const OnCheckCookie('isLogin'));
     super.initState();
   }
 
@@ -31,6 +33,9 @@ class _SurveiPageState extends State<SurveiPage> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.white,
         onPressed: () {
+          context
+              .read<LoginBloc>()
+              .add(const OnEmailSaved(email: '', key: 'isLogin'));
           Navigator.pushNamedAndRemoveUntil(
               context, LoginPage.routeName, (route) => false); //logout
         },

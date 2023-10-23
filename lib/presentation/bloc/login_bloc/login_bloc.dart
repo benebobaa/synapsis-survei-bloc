@@ -1,12 +1,12 @@
 import 'dart:developer';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:synapsis_survei/core/constants/api_urls.dart';
 import 'package:synapsis_survei/domain/usecases/login_usecase.dart';
 import 'package:synapsis_survei/presentation/bloc/login_bloc/login_event.dart';
 import 'package:synapsis_survei/presentation/bloc/login_bloc/login_state.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
-  static const keyToken = 'cookie';
   final LoginUsecase _loginUsecase;
   LoginBloc(this._loginUsecase) : super(LoginInitial()) {
     on<OnLogin>(
@@ -62,7 +62,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
     on<OnLoginFingerprint>((event, emit) async {
       emit(LoginLoading());
-      final result = await _loginUsecase.loginFingerprint(keyToken);
+      final result = await _loginUsecase.loginFingerprint(ApiUrls.cookieKey);
       await Future.delayed(const Duration(milliseconds: 500));
       result.fold((failure) {
         log(failure.message);
@@ -84,7 +84,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     });
 
     on<OnDeleteCookie>((event, emit) async {
-      final result = await _loginUsecase.deleteCookie(keyToken);
+      final result = await _loginUsecase.deleteCookie(ApiUrls.cookieKey);
       result.fold((failure) {
         emit(LoginFailure(failure.message));
       }, (data) async {

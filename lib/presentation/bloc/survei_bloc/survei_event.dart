@@ -15,10 +15,11 @@ class OnGetAllSurvei extends SurveiEvent {
 }
 
 class OnCheckCookie extends SurveiEvent {
-  const OnCheckCookie();
+  final String key;
+  const OnCheckCookie(this.key);
 
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [key];
 }
 
 class OnCountDown extends SurveiEvent {

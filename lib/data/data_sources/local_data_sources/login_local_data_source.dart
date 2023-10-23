@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:synapsis_survei/core/error/exception.dart';
 import 'package:synapsis_survei/core/services/local_auth.dart';
@@ -8,7 +9,6 @@ abstract class LoginLocalDataSource {
   Future<void> deleteEmailCache(String key);
   Future<String> loginFingerprint(String key);
   Future<void> deleteCookie(String key);
-
 }
 
 class LoginLocalDataSourceImpl extends LoginLocalDataSource {
@@ -47,12 +47,16 @@ class LoginLocalDataSourceImpl extends LoginLocalDataSource {
 
   @override
   Future<String> loginFingerprint(String key) async {
-    final result = await localAuthFingerprint.authenticate();
-    if (result) {
-      return Future.value(sharedPreferences.getString(key) ?? '');
-    } else {
-      throw FingerprintException();
-    } 
+    try {
+      final result = await localAuthFingerprint.authenticate();
+      if (result) {
+        return Future.value(sharedPreferences.getString(key) ?? '');
+      } else {
+        throw FingerprintException();
+      }
+    } on PlatformException catch (e) {
+      throw PlatformException(code: e.code);
+    }
   }
 
   @override
