@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:dartz/dartz.dart';
+import 'package:flutter/services.dart';
 import 'package:synapsis_survei/core/error/exception.dart';
 import 'package:synapsis_survei/core/error/failure.dart';
 import 'package:synapsis_survei/data/data_sources/local_data_sources/login_local_data_source.dart';
@@ -57,9 +58,11 @@ class LoginRepositoryImpl extends LoginRepository {
     try {
       final result = await loginLocalDataSource.loginFingerprint(key);
       return Right(result);
-    } on LocalDatabaseException {
-      return const Left(
-          DatabaseFailure('An error occurred while try to get token cache'));
+    } on PlatformException {
+      return const Left(LoginFailed(
+          'Your device does not support fingerprint or does not have fingerprint registered'));
+    } on FingerprintException {
+      return const Left(LoginFailed('Fingerprint canceled'));
     }
   }
 
@@ -75,6 +78,16 @@ class LoginRepositoryImpl extends LoginRepository {
       return const Left(ServerFailure('An error occurred while try to login'));
     } on SocketException {
       return const Left(ConnectionFailure('Failed to connect to the network'));
+    }
+  }
+
+   @override
+  Future<Either<Failure, void>> deleteCookie(String key) async {
+    try {
+      return Right(loginLocalDataSource.deleteCookie(key));
+    } on LocalDatabaseException {
+      return const Left(
+          DatabaseFailure('An error occurred while try to delete cookie'));
     }
   }
 }

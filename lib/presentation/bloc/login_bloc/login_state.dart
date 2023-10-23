@@ -48,7 +48,6 @@ class EmailSavedError extends LoginState {
   List<Object?> get props => [message];
 }
 
-
 class EmailCacheLoaded extends LoginState {
   final String email;
 
@@ -67,6 +66,23 @@ class EmailCacheError extends LoginState {
   List<Object?> get props => [message];
 }
 
-class LoginFingerprintSuccess extends LoginState{
-  
+class LoginFingerprintMatch extends LoginState {
+  final String token;
+
+  const LoginFingerprintMatch(this.token);
+
+  @override
+  List<Object?> get props => [token];
+}
+
+class LoginFingerprintSuccess extends LoginState {
+}
+
+class TokenExpired extends LoginState {
+  final String message;
+
+  const TokenExpired(this.message);
+
+  @override
+  List<Object?> get props => [message];
 }

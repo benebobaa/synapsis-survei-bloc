@@ -28,4 +28,8 @@ class LoginUsecase {
   Future<Either<Failure, String>> checkTokenExpired(String key) async {
     return await _loginRepository.checkTokenExpired(key);
   }
+
+  Future<Either<Failure, void>> deleteCookie(String key) async {
+    return await _loginRepository.deleteCookie(key);
+  }
 }

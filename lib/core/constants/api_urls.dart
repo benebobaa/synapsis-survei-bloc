@@ -11,6 +11,7 @@ class ApiUrls {
 
   //project code
   static final String _baseUrl = ConfigEnvironments.getBaseUrlAPI() ?? '';
+  static const String cookieKey = 'cookie';
 
   //login
   static String login = '$_baseUrl/api/login';

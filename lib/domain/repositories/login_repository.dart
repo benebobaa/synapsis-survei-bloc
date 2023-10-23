@@ -9,4 +9,6 @@ abstract class LoginRepository {
   Future<Either<Failure, void>> saveEmailCache(String key, String email);
   Future<Either<Failure, String>> loginFingerprint(String key);
   Future<Either<Failure, String>> checkTokenExpired(String key);
+  Future<Either<Failure, void>> deleteCookie(String key);
+
 }

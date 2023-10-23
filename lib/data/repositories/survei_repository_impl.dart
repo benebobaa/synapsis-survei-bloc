@@ -22,9 +22,9 @@ class SurveiRepositoryImpl extends SurveiRepository {
   });
 
   @override
-  Future<Either<Failure, AllSurveiEntity>> getAllSurvei() async {
+  Future<Either<Failure, AllSurveiEntity>> getAllSurvei(String tokenKey) async {
     try {
-      final result = await surveiRemoteDataSource.getAllSurvei();
+      final result = await surveiRemoteDataSource.getAllSurvei(tokenKey);
       log('result survei $result');
       return Right(result.toEntity());
     } on ServerException {
@@ -36,9 +36,9 @@ class SurveiRepositoryImpl extends SurveiRepository {
   }
 
   @override
-  Future<Either<Failure, DetailSurveiEntity>> getDetailSurvei(String surveiId) async{
+  Future<Either<Failure, DetailSurveiEntity>> getDetailSurvei(String surveiId, String tokenKey) async{
     try {
-      final result = await surveiRemoteDataSource.getDetailSurvei(surveiId);
+      final result = await surveiRemoteDataSource.getDetailSurvei(surveiId, tokenKey);
       log('result survei $result');
       return Right(result.toEntity());
     } on ServerException {
@@ -50,9 +50,9 @@ class SurveiRepositoryImpl extends SurveiRepository {
   }
 
   @override
-  Future<Either<Failure, String>> getCookie() async {
+  Future<Either<Failure, String>> getCookie(String key) async {
     try {
-      final result = await surveiLocalDataSource.getCookie();
+      final result = await surveiLocalDataSource.getCookie(key);
       return Right(result);
     } on LocalDatabaseException {
       return const Left(
@@ -60,13 +60,5 @@ class SurveiRepositoryImpl extends SurveiRepository {
     }
   }
 
-  @override
-  Future<Either<Failure, void>> deleteCookie() async {
-    try {
-      return Right(surveiLocalDataSource.deleteCookie());
-    } on LocalDatabaseException {
-      return const Left(
-          DatabaseFailure('An error occurred while try to delete cookie'));
-    }
-  }
+ 
 }

@@ -61,17 +61,34 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     );
 
     on<OnLoginFingerprint>((event, emit) async {
+      emit(LoginLoading());
       final result = await _loginUsecase.loginFingerprint(keyToken);
+      await Future.delayed(const Duration(milliseconds: 500));
+      result.fold((failure) {
+        log(failure.message);
+        emit(LoginFailure(failure.message));
+      }, (data) async {
+        emit(LoginFingerprintMatch(data));
+      });
+    });
 
+    on<OnCheckToken>((event, emit) async {
+      emit(LoginLoading());
+      final result = await _loginUsecase.checkTokenExpired(event.token);
+
+      result.fold((failure) {
+        emit(TokenExpired(failure.message));
+      }, (data) async {
+        emit(LoginFingerprintSuccess());
+      });
+    });
+
+    on<OnDeleteCookie>((event, emit) async {
+      final result = await _loginUsecase.deleteCookie(keyToken);
       result.fold((failure) {
         emit(LoginFailure(failure.message));
       }, (data) async {
-        final isExpired = await _loginUsecase.checkTokenExpired(keyToken);
-        isExpired.fold((failure) {
-          emit(LoginFailure(failure.message));
-        }, (data) {
-          emit(LoginFingerprintSuccess());
-        });
+        emit(LoginInitial());
       });
     });
   }

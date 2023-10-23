@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:synapsis_survei/core/common/widgets/custom_snackbar.dart';
@@ -29,7 +31,8 @@ class _SurveiPageState extends State<SurveiPage> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.white,
         onPressed: () {
-          context.read<SurveiBloc>().add(const OnDeleteCookie()); //logout
+          Navigator.pushNamedAndRemoveUntil(
+              context, LoginPage.routeName, (route) => false); //logout
         },
         child: const Icon(
           Icons.logout,
@@ -42,52 +45,53 @@ class _SurveiPageState extends State<SurveiPage> {
       body: Padding(
         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
         child: Center(
-            child: BlocConsumer<SurveiBloc, SurveiState>(
-          listener: (context, state) {
-            if (state is SurveiLoadFailure) {
-              CustomSnackbar.showMessage(state.message, context);
-            }
-            if (state is GetCookie) {
-              if (state.cookie == '') {
+          child: BlocConsumer<SurveiBloc, SurveiState>(
+            listener: (context, state) {
+              log('state is $state');
+              if (state is SurveiLoadFailure) {
+                CustomSnackbar.showMessage(state.message, context);
+              }
+              if (state is GetCookie) {
+                if (state.cookie == '') {
+                  Navigator.pushNamedAndRemoveUntil(
+                      context, LoginPage.routeName, (route) => false);
+                } else {
+                  context.read<SurveiBloc>().add(const OnGetAllSurvei());
+                }
+              }
+
+              if (state is CookieDeleted) {
                 Navigator.pushNamedAndRemoveUntil(
                     context, LoginPage.routeName, (route) => false);
-              } else {
-                context.read<SurveiBloc>().add(const OnGetAllSurvei());
               }
-            }
-
-            if (state is CookieDeleted) {
-              Navigator.pushNamedAndRemoveUntil(
-                  context, LoginPage.routeName, (route) => false);
-            }
-          },
-          builder: (context, state) {
-            if (state is SurveiLoading) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-            if (state is SurveiEmpty) {
-              return const Center(
-                child: Text('Tidak ada survei'),
-              );
-            }
-            if (state is SurveiLoaded) {
-              return ListView.builder(
-                itemCount: state.result.data.length,
-                itemBuilder: (context, index) {
-                  return SurveiItem(
-                    surveiName: state.result.data[index].surveyName,
-                    surveiCreatedAt: state.result.data[index].createdAt,
-                    surveiId: state.result.data[index].id,
-                  );
-                },
-              );
-            }
-            return const SizedBox();
-
-          },
-        )),
+            },
+            builder: (context, state) {
+              if (state is SurveiLoading) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+              if (state is SurveiEmpty) {
+                return const Center(
+                  child: Text('Tidak ada survei'),
+                );
+              }
+              if (state is SurveiLoaded) {
+                return ListView.builder(
+                  itemCount: state.result.data.length,
+                  itemBuilder: (context, index) {
+                    return SurveiItem(
+                      surveiName: state.result.data[index].surveyName,
+                      surveiCreatedAt: state.result.data[index].createdAt,
+                      surveiId: state.result.data[index].id,
+                    );
+                  },
+                );
+              }
+              return const SizedBox();
+            },
+          ),
+        ),
       ),
     );
   }

@@ -1,4 +1,5 @@
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:synapsis_survei/core/services/local_auth.dart';
 import 'package:synapsis_survei/data/data_sources/local_data_sources/login_local_data_source.dart';
 import 'package:synapsis_survei/data/data_sources/local_data_sources/survei_local_darta_source.dart';
 import 'package:synapsis_survei/data/data_sources/remote_data_source.dart';
@@ -19,6 +20,7 @@ import 'package:synapsis_survei/presentation/bloc/survei_detail_bloc/detail_surv
 import 'package:synapsis_survei/presentation/bloc/weather_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
+import 'package:local_auth/local_auth.dart';
 
 final locator = GetIt.instance;
 
@@ -54,8 +56,9 @@ class ServiceLocator {
     locator.registerLazySingleton<LoginRemoteDataSource>(() =>
         LoginRemoteDataSourceImpl(
             client: locator(), sharedPreferences: locator()));
-    locator.registerLazySingleton<LoginLocalDataSource>(
-        () => LoginLocalDataSourceImpl(sharedPreferences: locator()));
+    locator.registerLazySingleton<LoginLocalDataSource>(() =>
+        LoginLocalDataSourceImpl(
+            sharedPreferences: locator(), localAuthFingerprint: locator()));
     locator.registerLazySingleton<SurveiRemoteDataSource>(() =>
         SurveiRemoteDataSourceImpl(
             client: locator(), sharedPreferences: locator()));
@@ -64,6 +67,10 @@ class ServiceLocator {
 
     //http
     locator.registerLazySingleton(() => http.Client());
+
+    //local auth
+    locator.registerLazySingleton(() => LocalAuthentication());
+    locator.registerLazySingleton(() => LocalAuthFingerprint(locator()));
 
     //shared preference
     final sharedPreferences = await SharedPreferences.getInstance();

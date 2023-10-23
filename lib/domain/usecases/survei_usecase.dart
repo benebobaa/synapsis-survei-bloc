@@ -9,20 +9,18 @@ class SurveiUsecase {
 
   SurveiUsecase(this._surveiRepository);
 
-  Future<Either<Failure, AllSurveiEntity>> allSurvei() async {
-    return await _surveiRepository.getAllSurvei();
+  Future<Either<Failure, AllSurveiEntity>> allSurvei(String tokenKey) async {
+    return await _surveiRepository.getAllSurvei(tokenKey);
   }
 
   Future<Either<Failure, DetailSurveiEntity>> detailSurvei(
-      String surveiId) async {
-    return await _surveiRepository.getDetailSurvei(surveiId);
+      String surveiId, String tokenKey) async {
+    return await _surveiRepository.getDetailSurvei(surveiId, tokenKey);
   }
 
-  Future<Either<Failure, String>> getCookie() async {
-    return await _surveiRepository.getCookie();
+  Future<Either<Failure, String>> getCookie(String key) async {
+    return await _surveiRepository.getCookie(key);
   }
 
-  Future<Either<Failure, void>> deleteCookie() async {
-    return await _surveiRepository.deleteCookie();
-  }
+  
 }

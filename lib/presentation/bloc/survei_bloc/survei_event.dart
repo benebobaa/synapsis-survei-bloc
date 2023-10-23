@@ -21,13 +21,6 @@ class OnCheckCookie extends SurveiEvent {
   List<Object?> get props => [];
 }
 
-class OnDeleteCookie extends SurveiEvent {
-  const OnDeleteCookie();
-
-  @override
-  List<Object?> get props => [];
-}
-
 class OnCountDown extends SurveiEvent {
   const OnCountDown();
 

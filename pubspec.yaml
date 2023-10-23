@@ -48,6 +48,8 @@ dependencies:
   carousel_slider: ^4.2.1
   timer_count_down: ^2.2.0
   local_auth: ^2.1.7
+  local_auth_android: ^1.0.34
+  local_auth_ios: ^1.1.4
 
 dev_dependencies:
   bloc_test: ^9.1.4

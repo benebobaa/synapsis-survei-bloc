@@ -40,3 +40,21 @@ class OnGetEmailCache extends LoginEvent {
 class OnLoginFingerprint extends LoginEvent{
   
 }
+
+class OnCheckToken extends LoginEvent{
+  final String token;
+
+  const OnCheckToken(this.token);
+
+
+  @override
+
+  List<Object?> get props => [token];
+}
+
+class OnDeleteCookie extends LoginEvent {
+  const OnDeleteCookie();
+
+  @override
+  List<Object?> get props => [];
+}

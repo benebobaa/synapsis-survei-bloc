@@ -95,8 +95,10 @@ class DetailQuestionsModel extends DetailQuestionsEntity {
       inputType: jsonMap['input_type'],
       questionName: jsonMap['question_name'],
       questionSubject: jsonMap['question_subject'],
-      options: List<OptionsQuestionModel>.from(
-          jsonMap['options'].map((x) => OptionsQuestionModel.fromJson(x))),
+      options: (jsonMap['options'] != null)
+          ? List<OptionsQuestionModel>.from(
+              jsonMap['options'].map((x) => OptionsQuestionModel.fromJson(x)))
+          : [],
     );
   }
 }

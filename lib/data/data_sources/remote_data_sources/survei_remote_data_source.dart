@@ -11,8 +11,8 @@ import 'package:synapsis_survei/data/models/all_survei_model.dart';
 import 'package:synapsis_survei/data/models/detail_survei_model.dart';
 
 abstract class SurveiRemoteDataSource {
-  Future<AllSurveiModel> getAllSurvei();
-  Future<DetailSurveiModel> getDetailSurvei(String idSurvei);
+  Future<AllSurveiModel> getAllSurvei(String tokenKey);
+  Future<DetailSurveiModel> getDetailSurvei(String idSurvei, String tokenKey);
 }
 
 class SurveiRemoteDataSourceImpl extends SurveiRemoteDataSource {
@@ -25,12 +25,12 @@ class SurveiRemoteDataSourceImpl extends SurveiRemoteDataSource {
   });
 
   @override
-  Future<AllSurveiModel> getAllSurvei() async {
+  Future<AllSurveiModel> getAllSurvei(String tokenKey) async {
     final response = await client.get(
       Uri.parse(ApiUrls.allSurvei),
       headers: {
         'Cookie': await Future.value(
-          sharedPreferences.getString('cookie'),
+          sharedPreferences.getString(tokenKey),
         ),
       },
     );
@@ -46,12 +46,13 @@ class SurveiRemoteDataSourceImpl extends SurveiRemoteDataSource {
   }
 
   @override
-  Future<DetailSurveiModel> getDetailSurvei(String idSurvei) async {
+  Future<DetailSurveiModel> getDetailSurvei(
+      String idSurvei, String tokenKey) async {
     final response = await client.get(
       Uri.parse(ApiUrls.detailSurveyById(idSurvei)),
       headers: {
         'Cookie': await Future.value(
-          sharedPreferences.getString('cookie'),
+          sharedPreferences.getString(tokenKey),
         ),
       },
     );

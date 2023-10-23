@@ -124,9 +124,15 @@ class _LoginPageState extends State<LoginPage> {
                         context, SurveiPage.routeName, (route) => false);
                   }
 
+                  if (state is LoginFingerprintMatch) {
+                    context.read<LoginBloc>().add(OnCheckToken(state.token));
+                  }
                   if (state is LoginFingerprintSuccess) {
                     Navigator.pushNamedAndRemoveUntil(
                         context, SurveiPage.routeName, (route) => false);
+                  }
+                  if (state is TokenExpired) {
+                    context.read<LoginBloc>().add(const OnDeleteCookie());
                   }
                 },
                 builder: (context, state) {
@@ -142,7 +148,8 @@ class _LoginPageState extends State<LoginPage> {
                   if (state is LoginInitial ||
                       state is LoginFailure ||
                       state is EmailCacheLoaded ||
-                      state is EmailSavedError) {
+                      state is EmailSavedError ||
+                      state is TokenExpired) {
                     return Column(
                       children: [
                         CustomElevatedButton(
@@ -174,7 +181,11 @@ class _LoginPageState extends State<LoginPage> {
                         CustomElevatedButton(
                           title: 'Fingerpint',
                           isOutlined: true,
-                          onPressed: () {},
+                          onPressed: () {
+                            context.read<LoginBloc>().add(
+                                  OnLoginFingerprint(),
+                                );
+                          },
                         ),
                         const SizedBox(height: 10),
                       ],

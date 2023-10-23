@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:synapsis_survei/core/constants/api_urls.dart';
 import 'package:synapsis_survei/domain/entities/detail_survei_entity.dart';
 import 'package:synapsis_survei/domain/entities/survei_answer_entity.dart';
 import 'package:synapsis_survei/domain/usecases/survei_usecase.dart';
@@ -20,7 +21,8 @@ class DetailSurveiBloc extends Bloc<DetailSurveiEvent, DetailSurveiState> {
             0, SurveiAnswerEntity(surveiId: '', data: []))) {
     on<OnGetDetailSurvei>((event, emit) async {
       emit(DetailSurveiLoading());
-      final result = await _surveiUsecase.detailSurvei(event.surveiId);
+      final result =
+          await _surveiUsecase.detailSurvei(event.surveiId, ApiUrls.cookieKey);
 
       result.fold(
         (failure) {

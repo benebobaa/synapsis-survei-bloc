@@ -14,6 +14,8 @@ class NotFoundException implements Exception {
 
 class LocalDatabaseException implements Exception {}
 
-class UnauthenticatedException implements Exception {
-  
-}
+class UnauthenticatedException implements Exception {}
+
+class FingerprintException implements Exception {}
+
+
